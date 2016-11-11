@@ -20,6 +20,3 @@ for i in range(w - final_width, 0, -step):
 
 for b, j in enumerate(images):
     j.save('/home/sgrieve/Pictures/tmp/' + str(b).zfill(4) + '.png')
-
-#writeGif('test.gif', images, duration=.15, dither=0.)
-#images[-1].save('tmp.jpg')
