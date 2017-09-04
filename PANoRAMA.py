@@ -1,23 +1,55 @@
 from PIL import Image
 
-a = Image.open('input.jpg')
 
-step = 100
+class panorama():
+    def __init__(self, infile, step, duration, loop):
+        '''
 
-w, h = a.size
-final_width = int(h * 1.5)
-images = []
+        '''
+        # Load animation settings
+        self.step = step
+        self.duration = duration
+        self.loop = loop
 
-for i in range(0, w - final_width, step):
-    images.append(a.crop((i, 0, final_width + i, h)))
+        # Load the input file and get its geometry
+        self.input = Image.open(infile)
+        self.width, self.height = self.input.size
+        self.final_width = int(self.height * 1.5)
 
-# This leaves a black screen at the end of each loop
-# images = images + images[::-1]
+        # Create the animation frames
+        self.frames = []
+        self.process()
 
-# This second loop should be replaced by the slicing above
-for i in range(w - final_width, 0, -step):
-    images.append(a.crop((i, 0, final_width + i, h)))
+    def load(self):
+        '''
+        Method to contain the error handling of file loading
+        '''
+        pass
 
-output = Image.new(a.mode, (final_width, h))
-output.save('hello.gif', save_all=True, append_images=images, duration=200,
-            loop=0)
+    def process(self):
+        '''
+
+        '''
+        for i in range(0, self.width - self.final_width, self.step):
+            self.frames.append(self.input.crop((i, 0, self.final_width + i,
+                                                self.height)))
+
+        # This leaves a black screen at the end of each loop
+        # self.frames = self.frames + self.frames[::-1]
+
+        # This second loop should be replaced by the slicing above
+        for i in range(self.width - self.final_width, 0, -self.step):
+            self.frames.append(self.input.crop((i, 0, self.final_width + i,
+                                                self.height)))
+
+    def save(self, outfile):
+        '''
+
+        '''
+        output = Image.new(self.input.mode, (self.final_width, self.height))
+        output.save(outfile, save_all=True, append_images=self.frames,
+                    duration=self.duration, loop=self.loop)
+
+pan = panorama('input.jpg', 100, 20, 0)
+
+pan.save('classtest.gif')
