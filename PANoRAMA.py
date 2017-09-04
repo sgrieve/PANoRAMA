@@ -12,7 +12,8 @@ class panorama():
         self.loop = loop
 
         # Load the input file and get its geometry
-        self.input = Image.open(infile)
+        self.infile = infile
+        self.input = self.load()
         self.width, self.height = self.input.size
         self.final_width = int(self.height * 1.5)
 
@@ -24,7 +25,12 @@ class panorama():
         '''
         Method to contain the error handling of file loading
         '''
-        pass
+        try:
+            return Image.open(self.infile)
+        except FileNotFoundError:
+            print('File, {} not found.'.format(self.infile))
+        finally:
+            print('File, {} could not be loaded.'.format(self.infile))
 
     def process(self):
         '''
